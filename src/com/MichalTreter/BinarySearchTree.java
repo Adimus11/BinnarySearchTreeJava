@@ -41,46 +41,57 @@ public class BinarySearchTree<T extends Comparable<T>> {
     public void delete(T v) {
         Node<T> currentNode = this.root;
 
-        while(currentNode.getValue().compareTo(v) != 0){
-            if(currentNode.left.getValue().compareTo(v) == 1 && currentNode.right.getValue().compareTo(v) == -1){
-                System.out.println("Nie ma takiego elementu w drzewie, przez co nie można go usunąć.");
-                return;
-            }
+        Node<T> nodeToDelete = searchNode(v);
+        currentNode = nodeToDelete;
 
-            if(currentNode.getValue().compareTo(v) == -1){
-                currentNode = currentNode.left;
-            }
-            else{
+        while (nodeToDelete.right != null && nodeToDelete.left == null) {
+            if (currentNode.right != null) {
                 currentNode = currentNode.right;
-            }
-        }
-
-        Node<T> nodeToDelete = currentNode;
-
-        while(nodeToDelete.right != null && nodeToDelete.left == null){
-            if(currentNode.right != null){
-                currentNode = currentNode.right;
-            }
-            else{
-                if(currentNode.left != null){
+            } else {
+                if (currentNode.left != null) {
                     currentNode = currentNode.left;
-                }
-                else{
+                } else {
                     currentNode = currentNode.parrent;
                 }
             }
         }
-        if(nodeToDelete.parrent.right == nodeToDelete){
+        if (nodeToDelete.parrent.right == nodeToDelete) {
             nodeToDelete.parrent.right = null;
-        }
-        else{
+        } else {
             nodeToDelete.parrent.left = null;
         }
     }
 
     public boolean search(T v) {
+        Node<T> desiredNode = searchNode(v);
+
+        if (desiredNode != null) {
+            return true;
+        }
+
         return false;
+
     }
+
+    private Node<T> searchNode(T v) {
+        Node<T> currentNode = this.root;
+
+        while (currentNode.getValue().compareTo(v) != 0) {
+            if (currentNode.left.getValue().compareTo(v) == 1 && currentNode.right.getValue().compareTo(v) == -1) {
+                System.out.println("Nie ma takiego elementu w drzewie");
+                return null;
+            }
+
+            if (currentNode.getValue().compareTo(v) == -1) {
+                currentNode = currentNode.left;
+            } else {
+                currentNode = currentNode.right;
+            }
+        }
+
+        return currentNode;
+    }
+
 
     public void draw() {
 
