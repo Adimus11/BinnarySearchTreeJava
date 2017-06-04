@@ -37,4 +37,52 @@ public class BinarySearchTree<T extends Comparable<T>> {
             }
         }
     }
+
+    public void delete(T v) {
+        Node<T> currentNode = this.root;
+
+        while(currentNode.getValue().compareTo(v) != 0){
+            if(currentNode.left.getValue().compareTo(v) == 1 && currentNode.right.getValue().compareTo(v) == -1){
+                System.out.println("Nie ma takiego elementu w drzewie, przez co nie można go usunąć.");
+                return;
+            }
+
+            if(currentNode.getValue().compareTo(v) == -1){
+                currentNode = currentNode.left;
+            }
+            else{
+                currentNode = currentNode.right;
+            }
+        }
+
+        Node<T> nodeToDelete = currentNode;
+
+        while(nodeToDelete.right != null && nodeToDelete.left == null){
+            if(currentNode.right != null){
+                currentNode = currentNode.right;
+            }
+            else{
+                if(currentNode.left != null){
+                    currentNode = currentNode.left;
+                }
+                else{
+                    currentNode = currentNode.parrent;
+                }
+            }
+        }
+        if(nodeToDelete.parrent.right == nodeToDelete){
+            nodeToDelete.parrent.right = null;
+        }
+        else{
+            nodeToDelete.parrent.left = null;
+        }
+    }
+
+    public boolean search(T v) {
+        return false;
+    }
+
+    public void draw() {
+
+    }
 }
