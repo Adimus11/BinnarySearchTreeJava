@@ -11,6 +11,7 @@ public class BinarySearchTree<T extends Comparable<T>> {
             root = new Node(v, null);
         } else {
             Node<T> currentNode = root;
+
             while (currentNode != null) {
                 if (currentNode.getValue().compareTo(v) == 1) {
                     if (currentNode.right == null) {
@@ -21,27 +22,35 @@ public class BinarySearchTree<T extends Comparable<T>> {
                         currentNode = currentNode.right;
 
                     }
-                }
-                if (currentNode.getValue().compareTo(v) == 0) {
-                    System.out.println("Taki element już znajduje się w drzewie");
-                    currentNode = null;
-                }
-                if (currentNode.getValue().compareTo(v) == -1) {
-                    if (currentNode.left == null) {
-                        currentNode.left = new Node<T>(v, currentNode);
+                } else {
+                    if (currentNode.getValue().compareTo(v) == 0) {
+                        System.out.println("Taki element już znajduje się w drzewie");
                         currentNode = null;
                     } else {
-                        currentNode = currentNode.left;
+                        if (currentNode.getValue().compareTo(v) == -1) {
+                            if (currentNode.left == null) {
+                                currentNode.left = new Node<T>(v, currentNode);
+                                currentNode = null;
+                            } else {
+                                currentNode = currentNode.left;
+                            }
+                        }
                     }
                 }
             }
+
         }
+        System.out.println("Added " + v + " to tree.");
     }
 
     public void delete(T v) {
         Node<T> currentNode = this.root;
 
         Node<T> nodeToDelete = searchNode(v);
+        if (nodeToDelete == null) {
+            System.out.println("chuja znalazłem ;----D");
+        }
+
         currentNode = nodeToDelete;
 
         while (nodeToDelete.right != null && nodeToDelete.left == null) {
@@ -51,6 +60,12 @@ public class BinarySearchTree<T extends Comparable<T>> {
                 if (currentNode.left != null) {
                     currentNode = currentNode.left;
                 } else {
+                    if (currentNode.parrent.left == currentNode) {
+                        currentNode.parrent.left = null;
+                    } else {
+                        currentNode.parrent.right = null;
+                    }
+
                     currentNode = currentNode.parrent;
                 }
             }
@@ -60,6 +75,8 @@ public class BinarySearchTree<T extends Comparable<T>> {
         } else {
             nodeToDelete.parrent.left = null;
         }
+
+        System.out.println("Deleted " + v + " from tree.");
     }
 
     public boolean search(T v) {
@@ -77,16 +94,28 @@ public class BinarySearchTree<T extends Comparable<T>> {
         Node<T> currentNode = this.root;
 
         while (currentNode.getValue().compareTo(v) != 0) {
-            if (currentNode.left.getValue().compareTo(v) == 1 && currentNode.right.getValue().compareTo(v) == -1) {
-                System.out.println("Nie ma takiego elementu w drzewie");
-                return null;
+            if (currentNode.left != null && currentNode.right != null) {
+                if (currentNode.left.getValue().compareTo(v) == 1 && currentNode.right.getValue().compareTo(v) == -1) {
+                    System.out.println("Nie ma takiego elementu w drzewie");
+                    return null;
+                }
             }
 
             if (currentNode.getValue().compareTo(v) == -1) {
+                if (currentNode.left == null) {
+                    return null;
+                }
+
                 currentNode = currentNode.left;
             } else {
+                if (currentNode.right == null) {
+                    return null;
+                }
+
                 currentNode = currentNode.right;
             }
+
+
         }
 
         return currentNode;
