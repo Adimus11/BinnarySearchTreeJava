@@ -32,11 +32,16 @@ public class BinarySearchTree<T extends Comparable<T>> {
     }
 
     public void draw(){
-        root.inorder(root);
+        root.drawTree(root, 0);
+        System.out.println();
     }
 
     public boolean search(T v){
+        if(root != null){
+            return root.find(v);
+        }
 
+        return false;
     }
 
 

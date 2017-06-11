@@ -32,14 +32,6 @@ public class Node<T extends Comparable<T>> {
         return node;
     }
 
-    public void inorder(Node<T> node){
-        if(node != null) {
-            inorder(node.left);
-            System.out.print(node.value + " ");
-            inorder(node.right);
-        }
-    }
-
     public Node<T> remove(Node<T> node, T v){
 
         if(node == null){
@@ -79,6 +71,38 @@ public class Node<T extends Comparable<T>> {
         }
 
         return min;
+    }
+
+    public boolean find(T v){
+        Node<T> currentNode = this;
+
+        while (currentNode != null) {
+            if (currentNode.value.compareTo(v) == 0) {
+                return true;
+            }
+            if(currentNode.value.compareTo(v) > 0){
+                currentNode = currentNode.left;
+            }
+            else{
+                currentNode = currentNode.right;
+            }
+        }
+
+        return false;
+    }
+
+    public void drawTree(Node<T> root, int level){
+        if(root==null)
+            return;
+        drawTree(root.right, level+1);
+        if(level!=0){
+            for(int i=0;i<level-1;i++)
+                System.out.print("|\t");
+            System.out.println("|-------"+root.value);
+        }
+        else
+            System.out.println(root.value);
+        drawTree(root.left, level+1);
     }
 
 }
